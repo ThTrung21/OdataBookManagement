@@ -1,0 +1,6 @@
+@ODataBookStore_HostAddress = http://localhost:5055
+
+GET {{ODataBookStore_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
