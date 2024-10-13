@@ -1,0 +1,57 @@
+﻿@model ODataAPI.Models.EDM.Book
+
+<h2>Edit Book</h2>
+
+<form id="editForm">
+    <div>
+        <label for="Title">Title</label>
+        <input type="text" id="Title" name="Title" value="@Model.Title" required />
+    </div>
+    <div>
+        <label for="Author">Author</label>
+        <input type="text" id="Author" name="Author" value="@Model.Author" required />
+    </div>
+    <div>
+        <label for="ISBN">ISBN</label>
+        <input type="text" id="ISBN" name="ISBN" value="@Model.ISBN" required />
+    </div>
+    <div>
+        <label for="Price">Price</label>
+        <input type="number" id="Price" name="Price" value="@Model.Price" step="0.01" required />
+    </div>
+
+    <button type="submit">Save</button>
+</form>
+
+<script>
+    document.getElementById('editForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const bookId = @Model.Id;
+        const updatedBook = {
+            Id: bookId,
+            Title: document.getElementById('Title').value,
+            Author: document.getElementById('Author').value,
+            ISBN: document.getElementById('ISBN').value,
+            Price: parseFloat(document.getElementById('Price').value)
+        };
+
+        try {
+            const response = await fetch(`http://localhost:5297/odata/Books(${bookId})`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedBook)
+            });
+
+            if (response.ok) {
+                window.location.href = '/Book';
+            } else {
+                alert('Failed to update book');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>
